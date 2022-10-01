@@ -19,14 +19,14 @@ func _ready():
 		$CalendarGrid.add_child(lb)
 		ln.append(lb)
 	calenderNodes.append(ln)
-	for i in range(6):
+	for _i in range(6):
 		ln = []
 		for j in range(7):
 			var lb = Label.new()
 			lb.text = "%d" % j
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.align = Label.ALIGN_CENTER
-			lb.add_color_override("font_color", Co8ToColor( weekdayColorList[j] ))
+			#lb.add_color_override("font_color", Co8ToColor( weekdayColorList[j] ))
 			$CalendarGrid.add_child(lb)
 			ln.append(lb)
 		calenderNodes.append(ln)
@@ -43,13 +43,13 @@ var calendarColor = [255, 255, 255]
 var weatherColor = [255, 255, 255]
 var monthweekColor = [255, 255, 255]
 var otherMonthColorList = [
+	[127, 0, 0],  # sunday
 	[127, 127, 127],  # monday
 	[127, 127, 127],
 	[127, 127, 127],
 	[127, 127, 127],
 	[127, 127, 127],
 	[32, 32, 127],  # saturday
-	[127, 0, 0],  # sunday
 ]
 var todayColor = [255, 255, 0]
 var weekdayColorList = [
@@ -83,4 +83,21 @@ func _on_Timer_timeout():
 		weekdaystring[ datenow["weekday"]]  
 		]
 
+	var today = int(Time.get_unix_time_from_system())
+	var todayDict = Time.get_date_dict_from_unix_time(today)
+	var dayIndex = today - (7 + todayDict["weekday"] )*24*60*60 #datetime.timedelta(days=(-today.weekday() - 7))
+	
+	for week in range(6):
+		for wd in range(7):
+			var dayIndexDict = Time.get_date_dict_from_unix_time(dayIndex)
+			var curLabel = calenderNodes[week+1][wd]
+			curLabel.text = "%d" % dayIndexDict["day"]
+			var co = weekdayColorList[wd]
+			if dayIndexDict["month"] != todayDict["month"]:
+				co = otherMonthColorList[wd] 
+			elif dayIndexDict["day"] == todayDict["day"]:
+				co = todayColor 
+			curLabel.add_color_override("font_color", Co8ToColor( co ))
+			dayIndex += 24*60*60
 
+	
