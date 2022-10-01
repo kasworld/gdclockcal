@@ -9,6 +9,9 @@ extends Node2D
 # Called when the node enters the scene tree for the first time.
 var calenderNodes = []
 func _ready():
+
+	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
+
 	var ln = []
 	for i in range(len(weekdaystring)):
 		var lb = Label.new()
@@ -113,4 +116,8 @@ func updateCalendar():
 
 	
 func updateWeather():
-	pass
+	 $HTTPRequest.request("http://192.168.0.10/weather.txt")
+
+func _on_request_completed(result, response_code, headers, body):
+	var text = body.get_string_from_utf8()
+	$WeatherLabel.text = text

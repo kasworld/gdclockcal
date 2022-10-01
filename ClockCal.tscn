@@ -1,18 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://ClockCal.gd" type="Script" id=1]
 [ext_resource path="res://TimeLabalTheme.tres" type="Theme" id=2]
+[ext_resource path="res://WeatherTheme.tres" type="Theme" id=3]
 [ext_resource path="res://DateLabelTheme.tres" type="Theme" id=4]
 [ext_resource path="res://CalendarTheme.tres" type="Theme" id=7]
-[ext_resource path="res://NanumGothicBold.ttf" type="DynamicFontData" id=8]
-
-[sub_resource type="DynamicFont" id=1]
-size = 80
-use_mipmaps = true
-font_data = ExtResource( 8 )
-
-[sub_resource type="Theme" id=2]
-default_font = SubResource( 1 )
 
 [node name="ClockCalScn" type="Node2D"]
 script = ExtResource( 1 )
@@ -51,14 +43,24 @@ margin_bottom = 502.0
 theme = ExtResource( 4 )
 text = "2022-10-91 Sat"
 
-[node name="WeatherContainer" type="VBoxContainer" parent="."]
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="WeatherLabel" type="Label" parent="."]
+anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 485.0
+margin_top = 497.0
 margin_right = 960.0
 margin_bottom = 1080.0
 grow_vertical = 0
-theme = SubResource( 2 )
-alignment = 1
+theme = ExtResource( 3 )
+text = "26.3°
+맑음
+풍산동
+미세좋음
+초미세좋음
+2022-10-01T16:10:02.662676"
+valign = 2
+clip_text = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
