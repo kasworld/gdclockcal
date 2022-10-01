@@ -32,8 +32,8 @@ margin_left = 960.0
 margin_top = 350.0
 margin_right = 1920.0
 margin_bottom = 1080.0
-grow_horizontal = 2
-grow_vertical = 2
+grow_horizontal = 0
+grow_vertical = 0
 theme = ExtResource( 7 )
 columns = 7
 script = ExtResource( 6 )
@@ -48,6 +48,4 @@ theme = ExtResource( 4 )
 text = "2022-10-91 Sat"
 script = ExtResource( 5 )
 
-[connection signal="timeout" from="Timer" to="TimeLabel" method="_on_Timer_timeout"]
-[connection signal="timeout" from="Timer" to="CalendarGrid" method="_on_Timer_timeout"]
-[connection signal="timeout" from="Timer" to="DateLabel" method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
