@@ -1,11 +1,8 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://ClockCal.gd" type="Script" id=1]
 [ext_resource path="res://TimeLabalTheme.tres" type="Theme" id=2]
-[ext_resource path="res://TimeLabel.gd" type="Script" id=3]
 [ext_resource path="res://DateLabelTheme.tres" type="Theme" id=4]
-[ext_resource path="res://DateLabel.gd" type="Script" id=5]
-[ext_resource path="res://CalendarGrid.gd" type="Script" id=6]
 [ext_resource path="res://CalendarTheme.tres" type="Theme" id=7]
 [ext_resource path="res://NanumGothicBold.ttf" type="DynamicFontData" id=8]
 
@@ -32,7 +29,6 @@ margin_bottom = 410.0
 theme = ExtResource( 2 )
 text = "88:88:88"
 align = 1
-script = ExtResource( 3 )
 
 [node name="CalendarGrid" type="GridContainer" parent="."]
 anchor_right = 1.0
@@ -45,7 +41,6 @@ grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource( 7 )
 columns = 7
-script = ExtResource( 6 )
 
 [node name="DateLabel" type="Label" parent="."]
 anchor_left = 1.0
@@ -55,9 +50,8 @@ margin_right = 960.0
 margin_bottom = 502.0
 theme = ExtResource( 4 )
 text = "2022-10-91 Sat"
-script = ExtResource( 5 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="WeatherContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 485.0
