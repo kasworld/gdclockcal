@@ -81,7 +81,7 @@ func _on_Timer_timeout():
 	$TimeLabel.text = "%02d:%02d:%02d" % [timenow["hour"] , timenow["minute"] ,timenow["second"]  ]
 
 	# 10 minute changed, update weather
-	if oldWeather["minute"]/10 == timenow["minute"]/10:
+	if oldWeather["minute"] == timenow["minute"]:
 		return 
 	oldWeather = timenow
 	updateWeather()
