@@ -17,8 +17,12 @@ func _ready():
 
 var weekdaystring = ["일","월","화","수","목","금","토"]
 
+var oldDate = {"day":0}
 func _on_Timer_timeout():
 	var datenow = Time.get_date_dict_from_system()
+	if oldDate["day"] == datenow["day"]:
+		return
+	oldDate = datenow
 	self.text = "%04d-%02d-%02d %s" % [
 		datenow["year"] , datenow["month"] ,datenow["day"],
 		weekdaystring[ datenow["weekday"]]  

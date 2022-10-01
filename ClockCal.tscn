@@ -49,4 +49,5 @@ text = "2022-10-91 Sat"
 script = ExtResource( 5 )
 
 [connection signal="timeout" from="Timer" to="TimeLabel" method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer" to="CalendarGrid" method="_on_Timer_timeout"]
 [connection signal="timeout" from="Timer" to="DateLabel" method="_on_Timer_timeout"]

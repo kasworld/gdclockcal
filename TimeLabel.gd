@@ -16,6 +16,10 @@ func _ready():
 #	pass
 
 
+var oldTime = {"second":0}
 func _on_Timer_timeout():
 	var timenow = Time.get_time_dict_from_system()
+	if oldTime["second"] == timenow["second"]:
+		return 
+	oldTime = timenow
 	self.text = "%02d:%02d:%02d" % [timenow["hour"] , timenow["minute"] ,timenow["second"]  ]
