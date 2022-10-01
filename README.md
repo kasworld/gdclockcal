@@ -1,4 +1,4 @@
-# clock calendar and weather by dodot engine
+# clock calendar and weather by godot engine
 
 # godot 게임 엔진으로 만든 시계, 달력, 날씨 프로그램 
 
