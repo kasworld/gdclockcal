@@ -97,8 +97,10 @@ func _on_Timer_timeout():
 	updateCalendar()
 	
 func updateCalendar():	
-	var today = int(Time.get_unix_time_from_system())
+	var tz = Time.get_time_zone_from_system()
+	var today = int(Time.get_unix_time_from_system()) +tz["bias"]*60
 	var todayDict = Time.get_date_dict_from_unix_time(today)
+	print(todayDict)
 	var dayIndex = today - (7 + todayDict["weekday"] )*24*60*60 #datetime.timedelta(days=(-today.weekday() - 7))
 	
 	for week in range(6):
