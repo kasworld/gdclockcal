@@ -65,24 +65,35 @@ var weekdayColorList = [
 func Co8ToColor(co ):
 	return Color( co[0]/255.0, co[1]/255.0, co[2]/255.0)
 
+var oldTime = {"second":-1}
+var oldWeather = {"minute":-10}
 var oldDate = {"day":0}
-var oldTime = {"second":0}
 func _on_Timer_timeout():
-	var timenow = Time.get_time_dict_from_system()
+	var timenow = Time.get_datetime_dict_from_system()
+
+	# second changed, update clock
 	if oldTime["second"] == timenow["second"]:
 		return 
 	oldTime = timenow
 	$TimeLabel.text = "%02d:%02d:%02d" % [timenow["hour"] , timenow["minute"] ,timenow["second"]  ]
 
-	var datenow = Time.get_date_dict_from_system()
-	if oldDate["day"] == datenow["day"]:
-		return
-	oldDate = datenow
-	$DateLabel.text = "%04d-%02d-%02d %s" % [
-		datenow["year"] , datenow["month"] ,datenow["day"],
-		weekdaystring[ datenow["weekday"]]  
-		]
+	# 10 minute changed, update weather
+	if oldWeather["minute"]/10 == timenow["minute"]/10:
+		return 
+	oldWeather = timenow
+	updateWeather()
 
+	# date changed, update datelabel, calendar
+	if oldDate["day"] == timenow["day"]:
+		return
+	oldDate = timenow
+	$DateLabel.text = "%04d-%02d-%02d %s" % [
+		timenow["year"] , timenow["month"] ,timenow["day"],
+		weekdaystring[ timenow["weekday"]]  
+		]
+	updateCalendar()
+	
+func updateCalendar():	
 	var today = int(Time.get_unix_time_from_system())
 	var todayDict = Time.get_date_dict_from_unix_time(today)
 	var dayIndex = today - (7 + todayDict["weekday"] )*24*60*60 #datetime.timedelta(days=(-today.weekday() - 7))
@@ -101,3 +112,5 @@ func _on_Timer_timeout():
 			dayIndex += 24*60*60
 
 	
+func updateWeather():
+	pass
