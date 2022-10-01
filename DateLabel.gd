@@ -15,7 +15,11 @@ func _ready():
 #func _process(delta):
 #	pass
 
+var weekdaystring = ["일","월","화","수","목","금","토"]
 
 func _on_Timer_timeout():
-	var timenow = Time.get_time_dict_from_system()
-	self.text = "%02d:%02d:%02d" % [timenow["hour"] , timenow["minute"] ,timenow["second"]  ]
+	var datenow = Time.get_date_dict_from_system()
+	self.text = "%04d-%02d-%02d %s" % [
+		datenow["year"] , datenow["month"] ,datenow["day"],
+		weekdaystring[ datenow["weekday"]]  
+		]

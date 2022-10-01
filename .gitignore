@@ -5,3 +5,13 @@
 bin/
 build/
 lib/
+
+
+export_presets.cfg
+*.exe
+*.dll
+*.apk
+*.apk.idsig
+*.bak
+*.tmp
+*.pck
