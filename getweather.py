@@ -15,9 +15,10 @@ def getNaverWeather():
         group_weather = soup.find('div', {'class': 'group_weather'})
         # print(group_weather)
         current_box = group_weather.find('div', {'class': 'current_box'})
-        current = current_box.find('strong', {'class': 'current'}).text
-        current_state = current_box.find('strong', {'class': 'state'}).text
-        location = group_weather.find('span', {'class': 'location'}).text
+        currentTemperature = current_box.find(
+            'strong', {'class': 'current'}).text
+        currentSky = current_box.find('strong', {'class': 'state'}).text
+        geoLocation = group_weather.find('span', {'class': 'location'}).text
 
         # <ul class="list_air">
         # <li class="air_item">미세<strong class="state state_good">좋음</strong></li>
@@ -25,10 +26,10 @@ def getNaverWeather():
         # </ul>
         listair = group_weather.find('ul', {'class': 'list_air'})
         airlist = listair.find_all('li', {'class': 'air_item'})
-        air_fine, air_fine2 = airlist[0].text, airlist[1].text
+        dust1, dust2 = airlist[0].text, airlist[1].text
 
-        weatherUpdate = datetime.datetime.now()
-        return current, current_state, location, air_fine, air_fine2, weatherUpdate
+        updateDateTime = datetime.datetime.now()
+        return currentTemperature, currentSky, geoLocation, dust1, dust2, updateDateTime
     except:
         # return err info and retry after 1 min
         return "no internet connection retry later", "",  "",   "", "", datetime.datetime.now()

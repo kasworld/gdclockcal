@@ -15,3 +15,4 @@ export_presets.cfg
 *.bak
 *.tmp
 *.pck
+weather.txt
