@@ -7,10 +7,9 @@ extends Node2D
 
 export var weatherURL = "http://192.168.0.10/weather.txt"
 export var weekdaystring = ["일","월","화","수","목","금","토"]
-export var clockColor = [255, 255, 255]
-export var calendarColor = [255, 255, 255]
+export var timeColor = [255, 255, 255]
+export var dateColor = [255, 255, 255]
 export var weatherColor = [255, 255, 255]
-export var monthweekColor = [255, 255, 255]
 export var otherMonthColorList = [
 	[127, 0, 0],  # sunday
 	[127, 127, 127],  # monday
@@ -38,6 +37,10 @@ var calenderLabels = []
 func _ready():
 
 	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
+
+	$TimeLabel.add_color_override("font_color", Co8ToColor( timeColor ))
+	$DateLabel.add_color_override("font_color", Co8ToColor( dateColor ))
+	$WeatherLabel.add_color_override("font_color", Co8ToColor( weatherColor ))
 
 	var ln = []
 	for i in range(len(weekdaystring)):
