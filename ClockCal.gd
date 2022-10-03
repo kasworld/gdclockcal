@@ -6,7 +6,6 @@ extends Node2D
 # var b = "text"
 
 export var weatherURL = "http://192.168.0.10/weather.txt"
-export var testColor = Color(0x7f7f7fff)
 export var weekdaystring = ["일","월","화","수","목","금","토"]
 export var timeColor = Color(0xffffffff)
 export var dateColor = Color(0xffffffff)
