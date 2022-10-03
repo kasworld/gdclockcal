@@ -5,6 +5,33 @@ extends Node2D
 # var a = 2
 # var b = "text"
 
+export var weatherURL = "http://192.168.0.10/weather.txt"
+export var weekdaystring = ["일","월","화","수","목","금","토"]
+export var clockColor = [255, 255, 255]
+export var calendarColor = [255, 255, 255]
+export var weatherColor = [255, 255, 255]
+export var monthweekColor = [255, 255, 255]
+export var otherMonthColorList = [
+	[127, 0, 0],  # sunday
+	[127, 127, 127],  # monday
+	[127, 127, 127],
+	[127, 127, 127],
+	[127, 127, 127],
+	[127, 127, 127],
+	[32, 32, 127],  # saturday
+]
+export var todayColor = [255, 255, 0]
+export var weekdayColorList = [
+	[255, 0, 0],  # sunday
+	[255, 255, 255],  # monday
+	[255, 255, 255],
+	[255, 255, 255],
+	[255, 255, 255],
+	[255, 255, 255],
+	[32, 32, 255],  # saturday
+]
+
+
 
 # Called when the node enters the scene tree for the first time.
 var calenderLabels = []
@@ -36,34 +63,11 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+# func _process(delta):
+# 	if Input.is_action_pressed("ui_cancel"):
+# 	pass
 
 
-const weekdaystring = ["일","월","화","수","목","금","토"]
-const clockColor = [255, 255, 255]
-const calendarColor = [255, 255, 255]
-const weatherColor = [255, 255, 255]
-const monthweekColor = [255, 255, 255]
-const otherMonthColorList = [
-	[127, 0, 0],  # sunday
-	[127, 127, 127],  # monday
-	[127, 127, 127],
-	[127, 127, 127],
-	[127, 127, 127],
-	[127, 127, 127],
-	[32, 32, 127],  # saturday
-]
-const todayColor = [255, 255, 0]
-const weekdayColorList = [
-	[255, 0, 0],  # sunday
-	[255, 255, 255],  # monday
-	[255, 255, 255],
-	[255, 255, 255],
-	[255, 255, 255],
-	[255, 255, 255],
-	[32, 32, 255],  # saturday
-]
 
 func Co8ToColor(co ):
 	return Color( co[0]/255.0, co[1]/255.0, co[2]/255.0)
@@ -116,9 +120,10 @@ func updateCalendar():
 			curLabel.add_color_override("font_color", Co8ToColor( co ))
 			dayIndex += 24*60*60
 
-	
+
+
 func updateWeather():
-	 $HTTPRequest.request("http://192.168.0.10/weather.txt")
+	 $HTTPRequest.request(weatherURL)
 
 func _on_request_completed(result, response_code, headers, body):
 	var text = body.get_string_from_utf8()
