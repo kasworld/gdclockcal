@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 
 
 def getNaverWeather():
+    updateDateTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
         source = requests.get('https://www.naver.com/')
         soup = BeautifulSoup(source.content, "html.parser")
@@ -28,11 +29,10 @@ def getNaverWeather():
         airlist = listair.find_all('li', {'class': 'air_item'})
         dust1, dust2 = airlist[0].text, airlist[1].text
 
-        updateDateTime = datetime.datetime.now()
         return currentTemperature, currentSky, geoLocation, dust1, dust2, updateDateTime
     except:
         # return err info and retry after 1 min
-        return "no internet connection retry later", "",  "",   "", "", datetime.datetime.now()
+        return "no internet connection retry later", "",  "",   "", "", updateDateTime
 
 
 rtn = getNaverWeather()
@@ -43,4 +43,4 @@ with open('weather.txt', 'wt', encoding="utf-8") as f:
     for d in rtn[:-1]:
         f.write(d)
         f.write("\n")
-    f.write(rtn[-1].isoformat())
+    f.write(rtn[-1])
