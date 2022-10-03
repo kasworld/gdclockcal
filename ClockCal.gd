@@ -6,30 +6,30 @@ extends Node2D
 # var b = "text"
 
 export var weatherURL = "http://192.168.0.10/weather.txt"
+export var testColor = Color(0x7f7f7fff)
 export var weekdaystring = ["일","월","화","수","목","금","토"]
-export var timeColor = [255, 255, 255]
-export var dateColor = [255, 255, 255]
-export var weatherColor = [255, 255, 255]
+export var timeColor = Color(0xffffffff)
+export var dateColor = Color(0xffffffff)
+export var weatherColor = Color(0xffffffff)
 export var otherMonthColorList = [
-	[127, 0, 0],  # sunday
-	[127, 127, 127],  # monday
-	[127, 127, 127],
-	[127, 127, 127],
-	[127, 127, 127],
-	[127, 127, 127],
-	[32, 32, 127],  # saturday
+	Color(0x7f0000ff),  # sunday
+	Color(0x7f7f7fff),  # monday
+	Color(0x7f7f7fff),
+	Color(0x7f7f7fff),
+	Color(0x7f7f7fff),
+	Color(0x7f7f7fff),
+	Color(0x1f1f7fff),  # saturday
 ]
-export var todayColor = [255, 255, 0]
+export var todayColor = Color(0xffff00ff)
 export var weekdayColorList = [
-	[255, 0, 0],  # sunday
-	[255, 255, 255],  # monday
-	[255, 255, 255],
-	[255, 255, 255],
-	[255, 255, 255],
-	[255, 255, 255],
-	[32, 32, 255],  # saturday
+	Color(0xff0000ff),  # sunday
+	Color(0xffffffff),  # monday
+	Color(0xffffffff),
+	Color(0xffffffff),
+	Color(0xffffffff),
+	Color(0xffffffff),
+	Color(0x1f1fffff),  # saturday
 ]
-
 
 
 # Called when the node enters the scene tree for the first time.
@@ -38,9 +38,9 @@ func _ready():
 
 	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
 
-	$TimeLabel.add_color_override("font_color", Co8ToColor( timeColor ))
-	$DateLabel.add_color_override("font_color", Co8ToColor( dateColor ))
-	$WeatherLabel.add_color_override("font_color", Co8ToColor( weatherColor ))
+	$TimeLabel.add_color_override("font_color",  timeColor )
+	$DateLabel.add_color_override("font_color",  dateColor )
+	$WeatherLabel.add_color_override("font_color",  weatherColor )
 
 	var ln = []
 	for i in range(len(weekdaystring)):
@@ -48,7 +48,7 @@ func _ready():
 		lb.text = weekdaystring[i]
 		lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lb.align = Label.ALIGN_CENTER
-		lb.add_color_override("font_color", Co8ToColor( weekdayColorList[i] ))
+		lb.add_color_override("font_color",  weekdayColorList[i] )
 		$CalendarGrid.add_child(lb)
 		ln.append(lb)
 	calenderLabels.append(ln)
@@ -59,7 +59,7 @@ func _ready():
 			lb.text = "%d" % j
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.align = Label.ALIGN_CENTER
-			#lb.add_color_override("font_color", Co8ToColor( weekdayColorList[j] ))
+			#lb.add_color_override("font_color",  weekdayColorList[j] ))
 			$CalendarGrid.add_child(lb)
 			ln.append(lb)
 		calenderLabels.append(ln)
@@ -69,11 +69,6 @@ func _ready():
 # func _process(delta):
 # 	if Input.is_action_pressed("ui_cancel"):
 # 	pass
-
-
-
-func Co8ToColor(co ):
-	return Color( co[0]/255.0, co[1]/255.0, co[2]/255.0)
 
 var oldTime = {"second":-1}
 var oldWeather = {"minute":-10}
@@ -119,7 +114,7 @@ func updateCalendar():
 				co = otherMonthColorList[wd] 
 			elif dayIndexDict["day"] == todayDict["day"]:
 				co = todayColor 
-			curLabel.add_color_override("font_color", Co8ToColor( co ))
+			curLabel.add_color_override("font_color",  co )
 			dayIndex += 24*60*60
 
 
