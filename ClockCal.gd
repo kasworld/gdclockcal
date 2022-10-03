@@ -7,7 +7,7 @@ extends Node2D
 
 
 # Called when the node enters the scene tree for the first time.
-var calenderNodes = []
+var calenderLabels = []
 func _ready():
 
 	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
@@ -21,7 +21,7 @@ func _ready():
 		lb.add_color_override("font_color", Co8ToColor( weekdayColorList[i] ))
 		$CalendarGrid.add_child(lb)
 		ln.append(lb)
-	calenderNodes.append(ln)
+	calenderLabels.append(ln)
 	for _i in range(6):
 		ln = []
 		for j in range(7):
@@ -32,7 +32,7 @@ func _ready():
 			#lb.add_color_override("font_color", Co8ToColor( weekdayColorList[j] ))
 			$CalendarGrid.add_child(lb)
 			ln.append(lb)
-		calenderNodes.append(ln)
+		calenderLabels.append(ln)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -40,12 +40,12 @@ func _ready():
 #	pass
 
 
-var weekdaystring = ["일","월","화","수","목","금","토"]
-var clockColor = [255, 255, 255]
-var calendarColor = [255, 255, 255]
-var weatherColor = [255, 255, 255]
-var monthweekColor = [255, 255, 255]
-var otherMonthColorList = [
+const weekdaystring = ["일","월","화","수","목","금","토"]
+const clockColor = [255, 255, 255]
+const calendarColor = [255, 255, 255]
+const weatherColor = [255, 255, 255]
+const monthweekColor = [255, 255, 255]
+const otherMonthColorList = [
 	[127, 0, 0],  # sunday
 	[127, 127, 127],  # monday
 	[127, 127, 127],
@@ -54,8 +54,8 @@ var otherMonthColorList = [
 	[127, 127, 127],
 	[32, 32, 127],  # saturday
 ]
-var todayColor = [255, 255, 0]
-var weekdayColorList = [
+const todayColor = [255, 255, 0]
+const weekdayColorList = [
 	[255, 0, 0],  # sunday
 	[255, 255, 255],  # monday
 	[255, 255, 255],
@@ -106,7 +106,7 @@ func updateCalendar():
 	for week in range(6):
 		for wd in range(7):
 			var dayIndexDict = Time.get_date_dict_from_unix_time(dayIndex)
-			var curLabel = calenderNodes[week+1][wd]
+			var curLabel = calenderLabels[week+1][wd]
 			curLabel.text = "%d" % dayIndexDict["day"]
 			var co = weekdayColorList[wd]
 			if dayIndexDict["month"] != todayDict["month"]:
