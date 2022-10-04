@@ -69,33 +69,32 @@ func _ready():
 # 	if Input.is_action_pressed("ui_cancel"):
 # 	pass
 
-var oldTime = {"second":-1}
-var oldWeather = {"minute":-10}
-var oldDate = {"day":0}
+var oldWeatherUpdate = 0.0 # unix time 
+var oldDateUpdate = {"day":0} # unix time 
+
+export var updateWeatherSecond = 60*10
+
+# called every 1 second
 func _on_Timer_timeout():
-	var timenow = Time.get_datetime_dict_from_system()
+	var timeNowDict = Time.get_datetime_dict_from_system()
+	var timeNowUnix = Time.get_unix_time_from_system()
 
-	# second changed, update clock
-	if oldTime["second"] == timenow["second"]:
-		return 
-	oldTime = timenow
-	$TimeLabel.text = "%02d:%02d:%02d" % [timenow["hour"] , timenow["minute"] ,timenow["second"]  ]
+	# update every 1 second
+	$TimeLabel.text = "%02d:%02d:%02d" % [timeNowDict["hour"] , timeNowDict["minute"] ,timeNowDict["second"]  ]
 
-	# 10 minute changed, update weather
-	if oldWeather["minute"] == timenow["minute"]:
-		return 
-	oldWeather = timenow
-	updateWeather()
+	# every updateWeatherSecond, update weather
+	if oldWeatherUpdate + updateWeatherSecond < timeNowUnix:
+		oldWeatherUpdate = timeNowUnix
+		updateWeather()
 
 	# date changed, update datelabel, calendar
-	if oldDate["day"] == timenow["day"]:
-		return
-	oldDate = timenow
-	$DateLabel.text = "%04d-%02d-%02d %s" % [
-		timenow["year"] , timenow["month"] ,timenow["day"],
-		weekdaystring[ timenow["weekday"]]  
-		]
-	updateCalendar()
+	if oldDateUpdate["day"] != timeNowDict["day"]:
+		oldDateUpdate = timeNowDict
+		$DateLabel.text = "%04d-%02d-%02d %s" % [
+			timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"],
+			weekdaystring[ timeNowDict["weekday"]]  
+			]
+		updateCalendar()
 	
 func updateCalendar():	
 	var tz = Time.get_time_zone_from_system()
