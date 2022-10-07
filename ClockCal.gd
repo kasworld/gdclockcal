@@ -6,6 +6,8 @@ extends Node2D
 # var b = "text"
 
 export var weatherURL = "http://192.168.0.10/weather.txt"
+export var updateWeatherSecond = 60*1
+
 export var weekdaystring = ["일","월","화","수","목","금","토"]
 export var timeColor = Color(0xffffffff)
 export var dateColor = Color(0xffffffff)
@@ -17,9 +19,9 @@ export var otherMonthColorList = [
 	Color(0x7f7f7fff),
 	Color(0x7f7f7fff),
 	Color(0x7f7f7fff),
-	Color(0x1f1f7fff),  # saturday
+	Color(0x2f2f9fff),  # saturday
 ]
-export var todayColor = Color(0xffff00ff)
+export var todayColor = Color(0x00ff00ff)
 export var weekdayColorList = [
 	Color(0xff0000ff),  # sunday
 	Color(0xffffffff),  # monday
@@ -27,7 +29,7 @@ export var weekdayColorList = [
 	Color(0xffffffff),
 	Color(0xffffffff),
 	Color(0xffffffff),
-	Color(0x1f1fffff),  # saturday
+	Color(0x3f3fffff),  # saturday
 ]
 
 
@@ -71,8 +73,6 @@ func _ready():
 
 var oldWeatherUpdate = 0.0 # unix time 
 var oldDateUpdate = {"day":0} # unix time 
-
-export var updateWeatherSecond = 60*10
 
 # called every 1 second
 func _on_Timer_timeout():
