@@ -41,10 +41,16 @@ func _ready():
 
 	$TimeLabel.add_color_override("font_color",  timeColor )
 	$TimeLabel.add_color_override("font_color_shadow",  timeColor.inverted() )
+	$TimeLabel.set("custom_constants/shadow_offset_x",5)
+	$TimeLabel.set("custom_constants/shadow_offset_y",5)
 	$DateLabel.add_color_override("font_color",  dateColor )
 	$DateLabel.add_color_override("font_color_shadow",  dateColor.inverted() )
+	$DateLabel.set("custom_constants/shadow_offset_x",4)
+	$DateLabel.set("custom_constants/shadow_offset_y",4)
 	$WeatherLabel.add_color_override("font_color",  weatherColor )
 	$WeatherLabel.add_color_override("font_color_shadow",  weatherColor.inverted() )
+	$WeatherLabel.set("custom_constants/shadow_offset_x",3)
+	$WeatherLabel.set("custom_constants/shadow_offset_y",3)
 
 	var ln = []
 	for i in range(len(weekdaystring)):
@@ -54,7 +60,9 @@ func _ready():
 		lb.align = Label.ALIGN_CENTER
 		lb.add_color_override("font_color",  weekdayColorList[i] )
 		lb.add_color_override("font_color_shadow",  weekdayColorList[i].inverted() )
-		
+		lb.set("custom_constants/shadow_offset_x",2)
+		lb.set("custom_constants/shadow_offset_y",2)
+			
 		$CalendarGrid.add_child(lb)
 		ln.append(lb)
 	calenderLabels.append(ln)
