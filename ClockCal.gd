@@ -40,8 +40,11 @@ func _ready():
 	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
 
 	$TimeLabel.add_color_override("font_color",  timeColor )
+	$TimeLabel.add_color_override("font_color_shadow",  timeColor.inverted() )
 	$DateLabel.add_color_override("font_color",  dateColor )
+	$DateLabel.add_color_override("font_color_shadow",  dateColor.inverted() )
 	$WeatherLabel.add_color_override("font_color",  weatherColor )
+	$WeatherLabel.add_color_override("font_color_shadow",  weatherColor.inverted() )
 
 	var ln = []
 	for i in range(len(weekdaystring)):
@@ -50,6 +53,8 @@ func _ready():
 		lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lb.align = Label.ALIGN_CENTER
 		lb.add_color_override("font_color",  weekdayColorList[i] )
+		lb.add_color_override("font_color_shadow",  weekdayColorList[i].inverted() )
+		
 		$CalendarGrid.add_child(lb)
 		ln.append(lb)
 	calenderLabels.append(ln)
@@ -113,6 +118,7 @@ func updateCalendar():
 			elif dayIndexDict["day"] == todayDict["day"]:
 				co = todayColor 
 			curLabel.add_color_override("font_color",  co )
+			curLabel.add_color_override("font_color_shadow",  co.inverted() )
 			dayIndex += 24*60*60
 
 
