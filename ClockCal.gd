@@ -95,6 +95,9 @@ func _on_Timer_timeout():
 	# update every 1 second
 	$TimeLabel.text = "%02d:%02d:%02d" % [timeNowDict["hour"] , timeNowDict["minute"] ,timeNowDict["second"]  ]
 
+	# test background image change
+	#updateBackgrounImage(timeNowDict["second"])
+	
 	# every updateWeatherSecond, update weather
 	if oldWeatherUpdate + updateWeatherSecond < timeNowUnix:
 		oldWeatherUpdate = timeNowUnix
@@ -129,6 +132,14 @@ func updateCalendar():
 			curLabel.add_color_override("font_color_shadow",  co.inverted() )
 			dayIndex += 24*60*60
 
+
+func updateBackgrounImage(imagenum:int):
+	var bg 
+	if imagenum % 2 == 0 :
+		bg = load("res://background.png")
+	else :
+		bg = load("res://background2.png")
+	$BackgroundSprite.set_texture(bg)
 
 
 func updateWeather():
