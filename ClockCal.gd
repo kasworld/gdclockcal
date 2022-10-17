@@ -12,15 +12,6 @@ export var weekdaystring = ["일","월","화","수","목","금","토"]
 export var timeColor = Color(0xffffffff)
 export var dateColor = Color(0xffffffff)
 export var weatherColor = Color(0xffffffff)
-export var otherMonthColorList = [
-	Color(0x7f0000ff),  # sunday
-	Color(0x7f7f7fff),  # monday
-	Color(0x7f7f7fff),
-	Color(0x7f7f7fff),
-	Color(0x7f7f7fff),
-	Color(0x7f7f7fff),
-	Color(0x2f2f9fff),  # saturday
-]
 export var todayColor = Color(0x00ff00ff)
 export var weekdayColorList = [
 	Color(0xff0000ff),  # sunday
@@ -29,9 +20,8 @@ export var weekdayColorList = [
 	Color(0xffffffff),
 	Color(0xffffffff),
 	Color(0xffffffff),
-	Color(0x3f3fffff),  # saturday
+	Color(0x0000ffff),  # saturday
 ]
-
 
 # Called when the node enters the scene tree for the first time.
 var calenderLabels = []
@@ -40,15 +30,15 @@ func _ready():
 	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
 
 	$TimeLabel.add_color_override("font_color",  timeColor )
-	$TimeLabel.add_color_override("font_color_shadow",  timeColor.inverted() )
+	$TimeLabel.add_color_override("font_color_shadow",  timeColor.contrasted() )
 	$TimeLabel.set("custom_constants/shadow_offset_x",5)
 	$TimeLabel.set("custom_constants/shadow_offset_y",5)
 	$DateLabel.add_color_override("font_color",  dateColor )
-	$DateLabel.add_color_override("font_color_shadow",  dateColor.inverted() )
+	$DateLabel.add_color_override("font_color_shadow",  dateColor.contrasted() )
 	$DateLabel.set("custom_constants/shadow_offset_x",4)
 	$DateLabel.set("custom_constants/shadow_offset_y",4)
 	$WeatherLabel.add_color_override("font_color",  weatherColor )
-	$WeatherLabel.add_color_override("font_color_shadow",  weatherColor.inverted() )
+	$WeatherLabel.add_color_override("font_color_shadow",  weatherColor.contrasted() )
 	$WeatherLabel.set("custom_constants/shadow_offset_x",3)
 	$WeatherLabel.set("custom_constants/shadow_offset_y",3)
 
@@ -59,7 +49,7 @@ func _ready():
 		lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lb.align = Label.ALIGN_CENTER
 		lb.add_color_override("font_color",  weekdayColorList[i] )
-		lb.add_color_override("font_color_shadow",  weekdayColorList[i].inverted() )
+		lb.add_color_override("font_color_shadow",  weekdayColorList[i].contrasted() )
 		lb.set("custom_constants/shadow_offset_x",2)
 		lb.set("custom_constants/shadow_offset_y",2)
 			
@@ -73,6 +63,8 @@ func _ready():
 			lb.text = "%d" % j
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.align = Label.ALIGN_CENTER
+			lb.set("custom_constants/shadow_offset_x",2)
+			lb.set("custom_constants/shadow_offset_y",2)
 			#lb.add_color_override("font_color",  weekdayColorList[j] ))
 			$CalendarGrid.add_child(lb)
 			ln.append(lb)
@@ -125,11 +117,11 @@ func updateCalendar():
 			curLabel.text = "%d" % dayIndexDict["day"]
 			var co = weekdayColorList[wd]
 			if dayIndexDict["month"] != todayDict["month"]:
-				co = otherMonthColorList[wd] 
+				co = co.darkened(0.5)
 			elif dayIndexDict["day"] == todayDict["day"]:
 				co = todayColor 
 			curLabel.add_color_override("font_color",  co )
-			curLabel.add_color_override("font_color_shadow",  co.inverted() )
+			curLabel.add_color_override("font_color_shadow",  co.contrasted() )
 			dayIndex += 24*60*60
 
 
