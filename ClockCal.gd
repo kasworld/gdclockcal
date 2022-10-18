@@ -9,6 +9,7 @@ export var weatherURL = "http://192.168.0.10/weather.txt"
 export var updateWeatherSecond = 60*1
 
 export var weekdaystring = ["일","월","화","수","목","금","토"]
+export var backgroundColor = Color(0x000000ff)
 export var timeColor = Color(0xffffffff)
 export var dateColor = Color(0xffffffff)
 export var weatherColor = Color(0xffffffff)
@@ -23,11 +24,21 @@ export var weekdayColorList = [
 	Color(0x0000ffff),  # saturday
 ]
 
+
+
 # Called when the node enters the scene tree for the first time.
 var calenderLabels = []
+var bgImage = Image.new()
+var bgTexture = ImageTexture.new()
 func _ready():
 
 	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
+
+	bgImage.create(1920,1080,true,Image.FORMAT_RGBA8)
+	bgImage.fill(backgroundColor)
+	bgTexture.create_from_image(bgImage)
+	$BackgroundSprite.set_texture(bgTexture)
+
 
 	$TimeLabel.add_color_override("font_color",  timeColor )
 	$TimeLabel.add_color_override("font_color_shadow",  timeColor.contrasted() )
@@ -73,7 +84,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta):
-# 	if Input.is_action_pressed("ui_cancel"):
 # 	pass
 
 var oldWeatherUpdate = 0.0 # unix time 
@@ -87,9 +97,6 @@ func _on_Timer_timeout():
 	# update every 1 second
 	$TimeLabel.text = "%02d:%02d:%02d" % [timeNowDict["hour"] , timeNowDict["minute"] ,timeNowDict["second"]  ]
 
-	# test background image change
-	#updateBackgrounImage(timeNowDict["second"])
-	
 	# every updateWeatherSecond, update weather
 	if oldWeatherUpdate + updateWeatherSecond < timeNowUnix:
 		oldWeatherUpdate = timeNowUnix
@@ -124,14 +131,18 @@ func updateCalendar():
 			curLabel.add_color_override("font_color_shadow",  co.contrasted() )
 			dayIndex += 24*60*60
 
-
-func updateBackgrounImage(imagenum:int):
-	var bg 
-	if imagenum % 2 == 0 :
-		bg = load("res://background.png")
-	else :
-		bg = load("res://background2.png")
-	$BackgroundSprite.set_texture(bg)
+# var bgNum:int
+# func updateBackgrounImage():
+# 	bgNum +=1
+# 	var co1 = (sin( bgNum / 256.0 ) +1)/2
+# 	# var co1 = (sin( bgNum / PI /4 /6 ) +1)/2
+# 	bgImage.fill(Color( co1,co1,co1))
+# 	# if bgNum % 2 == 0 :
+# 	# 	bgImage.fill(Color(0x000000ff))
+# 	# else :
+# 	# 	bgImage.fill(Color(0xffffffff))
+# 	bgTexture.create_from_image(bgImage)
+# 	# $BackgroundSprite.set_texture(bgTexture)
 
 
 func updateWeather():
