@@ -8,6 +8,16 @@ extends Node2D
 export var weatherURL = "http://192.168.0.10/weather.txt"
 export var updateWeatherSecond = 60*1
 
+func updateWeather():
+	$HTTPRequestWeather.request(weatherURL)
+
+export var backgroundImageURL = "http://192.168.0.10/background.png"
+export var updateBackgroundImageSecond = 60*1
+
+func updateBackgroundImage():
+	$HTTPRequestBackgroundImage.request(backgroundImageURL)
+
+
 export var weekdaystring = ["일","월","화","수","목","금","토"]
 export var backgroundColor = Color(0x000000ff)
 export var timeColor = Color(0xffffffff)
@@ -24,20 +34,21 @@ export var weekdayColorList = [
 	Color(0x0000ffff),  # saturday
 ]
 
-
-
 # Called when the node enters the scene tree for the first time.
 var calenderLabels = []
 var bgImage = Image.new()
 var bgTexture = ImageTexture.new()
 func _ready():
 
-	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
-
 	bgImage.create(1920,1080,true,Image.FORMAT_RGBA8)
 	bgImage.fill(backgroundColor)
 	bgTexture.create_from_image(bgImage)
 	$BackgroundSprite.set_texture(bgTexture)
+
+	if updateWeatherSecond > 0:
+		$HTTPRequestWeather.connect("request_completed", self, "_on_weather_request_completed")
+	if updateBackgroundImageSecond > 0:
+		$HTTPRequestBackgroundImage.connect("request_completed", self, "_on_backgroundimage_request_completed")
 
 
 	$TimeLabel.add_color_override("font_color",  timeColor )
@@ -87,6 +98,7 @@ func _ready():
 # 	pass
 
 var oldWeatherUpdate = 0.0 # unix time 
+var oldBackgroundImageUpdate = 0.0 # unix time 
 var oldDateUpdate = {"day":0} # unix time 
 
 # called every 1 second
@@ -98,10 +110,14 @@ func _on_Timer_timeout():
 	$TimeLabel.text = "%02d:%02d:%02d" % [timeNowDict["hour"] , timeNowDict["minute"] ,timeNowDict["second"]  ]
 
 	# every updateWeatherSecond, update weather
+	if oldBackgroundImageUpdate + updateBackgroundImageSecond < timeNowUnix:
+		oldBackgroundImageUpdate = timeNowUnix
+		updateBackgroundImage()
+
 	if oldWeatherUpdate + updateWeatherSecond < timeNowUnix:
 		oldWeatherUpdate = timeNowUnix
 		updateWeather()
-
+	
 	# date changed, update datelabel, calendar
 	if oldDateUpdate["day"] != timeNowDict["day"]:
 		oldDateUpdate = timeNowDict
@@ -145,20 +161,6 @@ func updateCalendar():
 # 	# $BackgroundSprite.set_texture(bgTexture)
 
 
-func updateWeather():
-	 $HTTPRequest.request(weatherURL)
-
-# Last-Modified: Wed, 19 Oct 2022 03:10:02 GMT
-const toFindDate = "Last-Modified: "
-var lastModified 
-func _on_request_completed(result, response_code, headers, body):
-	if result == HTTPRequest.RESULT_SUCCESS:
-		var thisModified = keyValueFromHeader(toFindDate,headers)
-		if lastModified != thisModified:
-			var text = body.get_string_from_utf8()
-			$WeatherLabel.text = text
-			lastModified = thisModified
-	# print(keyValueFromHeader(toFindDate,headers))
 
 func keyValueFromHeader(key: String ,headers: PoolStringArray):
 	var keyLen = len(key)
@@ -166,3 +168,27 @@ func keyValueFromHeader(key: String ,headers: PoolStringArray):
 		if i.left(keyLen) == key:
 			return i.right(keyLen)
 	return ""
+
+# Last-Modified: Wed, 19 Oct 2022 03:10:02 GMT
+const toFindDate = "Last-Modified: "
+
+var lastWeatherModified 
+func _on_weather_request_completed(result, response_code, headers, body):
+	if result == HTTPRequest.RESULT_SUCCESS:
+		var thisModified = keyValueFromHeader(toFindDate,headers)
+		if lastWeatherModified != thisModified:
+			lastWeatherModified = thisModified
+			var text = body.get_string_from_utf8()
+			$WeatherLabel.text = text
+
+var lastBackgroundImageModified 
+func _on_backgroundimage_request_completed(result, response_code, headers, body):
+	if result == HTTPRequest.RESULT_SUCCESS:
+		var thisModified = keyValueFromHeader(toFindDate,headers)
+		if lastBackgroundImageModified != thisModified:
+			lastBackgroundImageModified = thisModified
+			var image_error = bgImage.load_png_from_buffer(body)
+			if image_error != OK:
+				print("An error occurred while trying to display the image.")
+			else:
+				bgTexture.create_from_image(bgImage)

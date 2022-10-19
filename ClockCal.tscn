@@ -43,7 +43,7 @@ margin_bottom = 502.0
 theme = ExtResource( 4 )
 text = "2022-10-91 Sat"
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
+[node name="HTTPRequestWeather" type="HTTPRequest" parent="."]
 
 [node name="WeatherLabel" type="Label" parent="."]
 anchor_left = 1.0
@@ -66,5 +66,7 @@ clip_text = true
 [node name="BackgroundSprite" type="Sprite" parent="."]
 z_index = -1
 centered = false
+
+[node name="HTTPRequestBackgroundImage" type="HTTPRequest" parent="."]
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

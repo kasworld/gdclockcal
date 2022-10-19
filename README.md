@@ -6,10 +6,12 @@
 
 날씨 업데이트를 위해서는 weather.txt를 정기적으로 업데이트 해줄 서버와 서비스 해줄 http 서버가 필요합니다. 
 
-[wasmclockcal](https://github.com/kasworld/wasmclockcal) 에 있는 getweather.py, dir2http 를 사용하시면 됩니다. 
+scheduler등을 사용해서  getweather.py 로 weather.txt 를 업데이트고 
 
-clockcal.gd 에 있는 
+background image로 사용할 그림을 background.png 로 
 
-    $HTTPRequest.request("http://192.168.0.10/weather.txt") 
+웹서버로 서비스 할 수 있게 하면 됩니다.
 
-를 수정하시면 됩니다. 
+각종 설정은 gogot 프로젝트에서 inspector 에 export 되어 있는 script variables 를 수정하시면 됩니다. 
+
+![screenshot](exportvars.png)
