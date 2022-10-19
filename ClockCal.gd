@@ -148,6 +148,21 @@ func updateCalendar():
 func updateWeather():
 	 $HTTPRequest.request(weatherURL)
 
+# Last-Modified: Wed, 19 Oct 2022 03:10:02 GMT
+const toFindDate = "Last-Modified: "
+var lastModified 
 func _on_request_completed(result, response_code, headers, body):
-	var text = body.get_string_from_utf8()
-	$WeatherLabel.text = text
+	if result == HTTPRequest.RESULT_SUCCESS:
+		var thisModified = keyValueFromHeader(toFindDate,headers)
+		if lastModified != thisModified:
+			var text = body.get_string_from_utf8()
+			$WeatherLabel.text = text
+			lastModified = thisModified
+	# print(keyValueFromHeader(toFindDate,headers))
+
+func keyValueFromHeader(key: String ,headers: PoolStringArray):
+	var keyLen = len(key)
+	for i in headers:
+		if i.left(keyLen) == key:
+			return i.right(keyLen)
+	return ""
