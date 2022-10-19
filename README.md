@@ -8,7 +8,7 @@
 
 scheduler등을 사용해서  getweather.py 로 weather.txt 를 업데이트고 
 
-background image로 사용할 그림을 background.png 로 
+배경으로 사용할 그림을 background.png (1920x1080) 로 
 
 웹서버로 서비스 할 수 있게 하면 됩니다.
 
