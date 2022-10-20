@@ -39,8 +39,9 @@ var calenderLabels = []
 var bgImage = Image.new()
 var bgTexture = ImageTexture.new()
 func _ready():
-
-	bgImage.create(1920,1080,true,Image.FORMAT_RGBA8)
+	var width = ProjectSettings.get_setting("display/window/size/width")
+	var height = ProjectSettings.get_setting("display/window/size/height")
+	bgImage.create(width,height,true,Image.FORMAT_RGBA8)
 	bgImage.fill(backgroundColor)
 	bgTexture.create_from_image(bgImage)
 	$BackgroundSprite.set_texture(bgTexture)
@@ -49,7 +50,6 @@ func _ready():
 		$HTTPRequestWeather.connect("request_completed", self, "_on_weather_request_completed")
 	if updateBackgroundImageSecond > 0:
 		$HTTPRequestBackgroundImage.connect("request_completed", self, "_on_backgroundimage_request_completed")
-
 
 	$TimeLabel.add_color_override("font_color",  timeColor )
 	$TimeLabel.add_color_override("font_color_shadow",  timeColor.contrasted() )
@@ -99,7 +99,7 @@ func _ready():
 
 var oldWeatherUpdate = 0.0 # unix time 
 var oldBackgroundImageUpdate = 0.0 # unix time 
-var oldDateUpdate = {"day":0} # unix time 
+var oldDateUpdate = {"day":0} # datetime dict
 
 # called every 1 second
 func _on_Timer_timeout():
