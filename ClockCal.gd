@@ -19,18 +19,18 @@ func updateBackgroundImage():
 
 
 export var weekdaystring = ["일","월","화","수","목","금","토"]
-export var backgroundColor = Color(0x000000ff)
-export var timeColor = Color(0xffffffff)
-export var dateColor = Color(0xffffffff)
-export var weatherColor = Color(0xffffffff)
+export var backgroundColor = Color(0xffffffff)
+export var timeColor = Color(0x000000ff)
+export var dateColor = Color(0x000000ff)
+export var weatherColor = Color(0x000000ff)
 export var todayColor = Color(0x00ff00ff)
 export var weekdayColorList = [
 	Color(0xff0000ff),  # sunday
-	Color(0xffffffff),  # monday
-	Color(0xffffffff),
-	Color(0xffffffff),
-	Color(0xffffffff),
-	Color(0xffffffff),
+	Color(0x000000ff),  # monday
+	Color(0x000000ff),
+	Color(0x000000ff),
+	Color(0x000000ff),
+	Color(0x000000ff),
 	Color(0x0000ffff),  # saturday
 ]
 
@@ -140,7 +140,7 @@ func updateCalendar():
 			curLabel.text = "%d" % dayIndexDict["day"]
 			var co = weekdayColorList[wd]
 			if dayIndexDict["month"] != todayDict["month"]:
-				co = co.darkened(0.5)
+				co = co.contrasted()
 			elif dayIndexDict["day"] == todayDict["day"]:
 				co = todayColor 
 			curLabel.add_color_override("font_color",  co )
