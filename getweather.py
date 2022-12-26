@@ -30,8 +30,9 @@ def getNaverWeather():
         dust1, dust2 = airlist[0].text, airlist[1].text
 
         return currentTemperature, currentSky, geoLocation, dust1, dust2, updateDateTime
-    except:
+    except Exception as e:
         # return err info and retry after 1 min
+        print(e)
         return "no internet connection retry later", "",  "",   "", "", updateDateTime
 
 
