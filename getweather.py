@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
 import datetime
+import time
 import requests
 from bs4 import BeautifulSoup
 
 
 def getNaverWeather():
-    updateDateTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    err = None
     try:
         source = requests.get('https://www.naver.com/')
         soup = BeautifulSoup(source.content, "html.parser")
@@ -29,19 +29,31 @@ def getNaverWeather():
         airlist = listair.find_all('li', {'class': 'air_item'})
         dust1, dust2 = airlist[0].text, airlist[1].text
 
-        return currentTemperature, currentSky, geoLocation, dust1, dust2, updateDateTime
+        return currentTemperature, currentSky, geoLocation, dust1, dust2, err
     except Exception as e:
-        # return err info and retry after 1 min
         print(e)
-        return "no internet connection retry later", "",  "",   "", "", updateDateTime
+        return "fail to get weather", repr(e),  "",   "", "", e
 
 
-rtn = getNaverWeather()
-# rtn = "internet", "connection",  "no",   "retry", "in 1 min", datetime.datetime.now() - \
-#     datetime.timedelta(minutes=9)
+def getNaverWeatherRetry():
+    tryCount = 10
+    sleepDelaySec = 1.0
+    rtn = getNaverWeather()
+    while rtn[-1] != None:
+        time.sleep(sleepDelaySec)
+        rtn = getNaverWeather()
+        tryCount -= 1
+        if tryCount <= 0:
+            break
+
+    return rtn[:-1]
+
+
+rtn = getNaverWeatherRetry()
+updateDateTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 with open('weather.txt', 'wt', encoding="utf-8") as f:
-    for d in rtn[:-1]:
+    for d in rtn:
         f.write(d)
         f.write("\n")
-    f.write(rtn[-1])
+    f.write(updateDateTime)
